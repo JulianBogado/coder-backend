@@ -1,31 +1,21 @@
 const express = require('express');
-const PORT = process.env.PORT || 8080;
-const Contenedor = require('./desafio2')
-let contenedor1 = new Contenedor('./productos.txt')
+const PORT = process.env.PORT || 5050;
+const apiRouters = require('./routers/app.routers');
 
 const app = express();
 
-app.get('/', (req, res) => {
-    res.send('Bienvenido !');
-});
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-//Traer todos los productos
-
-app.get('/productos', async (req, res) => {
-    const productos = await contenedor1.getAll();
-    res.send(productos);
-});
-//Get random product
-
-app.get('/productosRandom', async (req, res) => {
-    const productoRandom = await contenedor1.getRandom();
-    res.send(productoRandom);
-});
+app.use('/api', apiRouters);
+app.use(express.static('public'));
 
 const connectedServer = app.listen(PORT, () => {
-  console.log(`Server listening on port ${PORT}`);
+    console.log(`Server is running on port ${PORT}`);
+    }
+);
+
+connectedServer.on('error', (error) => {
+    console.log(`Error: ${error}`);
 });
 
-connectedServer.on('error', (err) => {
-    console.log(err.message);
-    });
