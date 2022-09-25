@@ -6,12 +6,12 @@ let products = new Products('data/productos.json');
 
 const route = express.Router();
 
-// Traer todos los productos
+/* // Traer todos los productos
 route.get('/', async (req, res) => {
     const data = await products.getAll();
     res.json(data);
 });
-
+ */
 // Traer un producto por id
 route.get('/:id', async (req, res) => {
     const { id } = req.params;
@@ -22,25 +22,27 @@ route.get('/:id', async (req, res) => {
     }
 });
 
-// Crear un producto
+//Vista con de productos con ejs
+
+
+route.get('/', async (req, res) => {
+    const data = await products.getAll();
+    res.render('list', { data, title: 'Formulario' });
+});
+
+
+// Crear un producto con ejs
 route.post('/', async (req, res) => {
     const { title, price, thumbnail } = req.body;
-    if (!title || !price || !thumbnail) {
-        res.status(400).json({error: 'Faltan datos' });
-    }
 
-    const newProduct = await products.save({
-        id: products.length + 1,
+    res.render('sendproducts', { id, title: 'Formulario' });
+    const id = await products.save({
         title,
         price,
-        thumbnail
+        thumbnail,
     });
-
-    res.json({
-        status: 'Producto agregado',
-        result: `Se agrego el producto ${title} con id ${newProduct}`
-    });
-    console.log(products);
+    res.redirect('/');
+    
 });
 
 
