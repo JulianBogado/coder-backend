@@ -3,6 +3,6 @@ const productRoutes = require('./products/products.routes');
 
 const router = express.Router();
 
-router.use('/', productRoutes);
+router.use('/products', productRoutes);
 
 module.exports = router;

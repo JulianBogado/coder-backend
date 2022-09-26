@@ -27,23 +27,22 @@ route.get('/:id', async (req, res) => {
 
 route.get('/', async (req, res) => {
     const data = await products.getAll();
-    res.render('list', { data, title: 'Formulario' });
+    res.render('index', { data, title: 'Listado de productos' });
 });
 
 
-// Crear un producto con ejs
 route.post('/', async (req, res) => {
     const { title, price, thumbnail } = req.body;
 
-    res.render('sendproducts', { id, title: 'Formulario' });
-    const id = await products.save({
-        title,
-        price,
-        thumbnail,
-    });
-    res.redirect('/');
-    
+	products.save({
+		title,
+		price,
+		thumbnail,
+	});
+
+	res.redirect('/');
 });
+
 
 
 //Modificar producto por id
